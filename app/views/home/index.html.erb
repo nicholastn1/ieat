@@ -1,2 +1,19 @@
 <h1>Home#index</h1>
-<p>User email signed in: <%= @email %></p>
+
+<% unless user_signed_in? %>
+  <%= link_to 'Sign in', new_user_session_path %>
+  <%= link_to 'Sign up', new_user_registration_path %>
+<% end %>
+
+<% if user_signed_in? %>
+  <p>User email signed in: <%= @email %> and you're an <%= current_user.role %></p>
+
+  <% if current_user.restaurant? %>
+    <%= render 'restaurant' %>
+  <% elsif current_user.customer? %>
+    <%= render 'customer' %>
+  <% end %>
+
+  <%= link_to 'Sign out', destroy_user_session_path, method: :delete %>
+<% end %>
+
